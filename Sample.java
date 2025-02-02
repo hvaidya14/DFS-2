@@ -81,3 +81,41 @@ class Solution {
         return;
     }
 }
+
+
+
+
+class Solution {
+    public String decodeString(String s) {
+        
+
+        StringBuilder sb = new StringBuilder(s);
+        Stack<Integer> numstack = new Stack<>();
+        Stack<StringBuilder> strstack = new Stack<>();
+        int num=0;
+        StringBuilder currstr = new StringBuilder();
+        for (int i=0;i<sb.length();i++) {
+            char c = sb.charAt(i);
+            if (Character.isDigit(c)) {
+                int currnum = c-'0';
+                num = 10*num + currnum;
+            } else if (c == '[') {
+                numstack.push(num);
+                strstack.push(currstr);
+                num=0;
+                currstr=new StringBuilder();
+            } else if (c == ']') {
+                int times=numstack.pop();
+                StringBuilder newstr = new StringBuilder();
+                for (int j=0;j<times;j++) {
+                    newstr.append(currstr);
+                }
+                currstr = strstack.pop().append(newstr);
+            } else {
+               currstr.append(sb.charAt(i));
+            }
+        }
+        return currstr.toString();
+
+    }
+}
